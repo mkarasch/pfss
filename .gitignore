@@ -3,3 +3,4 @@ dev.db
 env/
 env2/
 __pycache__
+local_settings.py
