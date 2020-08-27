@@ -18,6 +18,13 @@ This project requires Python 2.  If you don't have a Python 2 installation, do t
 
 These instructions were put together using Git Bash on a Windows computer.  Your mileage may vary.
 
+### Get a copy of the code
+
+```
+git clone https://github.com/mkarasch/pfss.git
+cd pfss
+```
+
 ### Setup a virtual environment
 
 I don't want the old requirements mixing in with my current development efforts, so I run from a virtual environment
