@@ -1,31 +1,73 @@
-# pinax-project-account
+# Pathfinder Summoner's Scribe
 
-[![Join the chat at https://gitter.im/pinax/pinax-project-account](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/pinax/pinax-project-account?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+Lovingly forked from https://github.com/qu0zl/pfss
 
-In addition to what is provided by the "zero" project, this project provides
-thorough integration with django-user-accounts, adding comprehensive account
-management functionality. It is a foundation suitable for most sites that have
-user accounts.
+ The Pathfinder Summoner's Scribe (PFSS) can be used to generate on-screen displays or print-outs of summonable creatures from the Pathfinder Role-playing game.
 
+Creatures may be displayed individually, in groups of your choosing, or in pre-populated groups representing useful sets of creatures such as those available through Summon Monster 1, for example
 
-Usage:
+The PFSS will dynamically apply the effects of the Augment Summons feat to any creatures that you wish. Automatically modifying stats such as attacks, skills and even special effect DCs based on this feat. You may apply the feat to some, all, or none of the creatures in a particular list.
 
-```
-django-admin.py startproject --template=https://github.com/pinax/pinax-project-account/zipball/master <project_name>
-```
+## CAVEAT
 
-Getting Started:
+This version uses some really old (and probably insecure) dependencies.  I do not recommend running this anywhere internet-facing.
 
+## Running PFSS locally in 2020
+
+This project requires Python 2.  If you don't have a Python 2 installation, do that first.
+
+These instructions were put together using Git Bash on a Windows computer.  Your mileage may vary.
+
+### Setup a virtual environment
+
+I don't want the old requirements mixing in with my current development efforts, so I run from a virtual environment
 ```
 pip install virtualenv
-virtualenv mysiteenv
-source mysiteenv/bin/activate
-pip install Django==1.7.4
-django-admin.py startproject --template=https://github.com/pinax/pinax-project-account/zipball/master mysite
-cd mysite
-chmod +x manage.py
-pip install -r requirements.txt
-./manage.py migrate
-./manage.py loaddata sites
-./manage.py runserver
+virtualenv --python 2 env2
+source env2/Scripts/activate
 ```
+
+### Install dependencies
+
+```
+pip install -r requirements.txt
+```
+
+### Create local settings
+
+Create a file in the pfss directory called `local_settings.py`
+Add a value for the `SECRET_KEY` variable.
+The easiest way I found to generate a value for `SECRET_KEY` was to run
+```
+base64 /dev/urandom | head -c50
+```
+The contents of `local_settings.py` should look something like this:
+```
+SECRET_KEY = 'rctFqHaSjOkbrR0y1UACdFGU+7FGxvZmzzvcBjKDihJaB741we'
+```
+
+### Setup the local database
+
+Have Django set up the local database and import the necessary data
+```
+python manage.py migrate
+python manage.py loaddata sites
+python manage.py loaddata pfss
+```
+### Rename the site_base.html
+
+The site_base.html template that ships with pinax seems to be found before the copy of site_base.html that we want to use.  I got around this by renaming the file.
+The file we need to rename is in `<project directory>/env2/Lib/site-packages/pinax_theme_bootstrap/templates`.  I just renamed mine to NOPEsite_base.html.
+
+### Run runserver
+
+runserver isn't meant for a production environment, but it will serve our needs for running locally.
+```
+python manage.py runserver
+```
+
+### Load the website
+
+Navigate to http://127.0.0.1:8000/pfs/
+
+## Have fun storming the castle!
