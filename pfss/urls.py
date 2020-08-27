@@ -1,3 +1,5 @@
+import sys
+
 from django.conf import settings
 from django.conf.urls import include, url
 from django.conf.urls.static import static
@@ -8,8 +10,11 @@ from django.contrib import admin
 
 from . import views
 
-prefix=""
-#prefix='pfs/' # used to run with runserver
+if 'runserver' in sys.argv:
+    prefix="pfs/"
+else:
+    prefix=''
+
 urlpatterns = [
     url(r"^%s$" % prefix, TemplateView.as_view(template_name="homepage.html"), name="home"),
     url(r"^%sadmin/" % prefix, include(admin.site.urls)),
